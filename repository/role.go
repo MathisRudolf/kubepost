@@ -205,7 +205,11 @@ func (r *roleRepository) Grant(role *v1alpha1.Role) error {
 		// grant permissions
 		_, err = r.conn.Exec(
 			context.Background(),
-			createGrantQuery(role.Spec.RoleName, &grant),
+			createGrantQuery(
+				role.Spec.RoleName,
+				&grant,
+				role.Spec.WithGrantOption,
+			),
 		)
 
 		if err != nil {
@@ -227,7 +231,7 @@ func (r *roleRepository) Grant(role *v1alpha1.Role) error {
 	return nil
 }
 
-func createGrantQuery(roleName string, grant *v1alpha1.Grant) string {
+func createGrantQuery(roleName string, grant *v1alpha1.Grant, withGrantOption bool) string {
 	var query string
 
 	switch strings.ToUpper(grant.ObjectType) {
@@ -255,12 +259,9 @@ func createGrantQuery(roleName string, grant *v1alpha1.Grant) string {
 		)
 	}
 
-	// TODO ASO
-	/*
-		if d.DoesRoleExist("with_grant_option").(bool) == true {
-			query = query + " WITH GRANT OPTION"
-		}
-	*/
+	if withGrantOption {
+		query = query + " WITH GRANT OPTION"
+	}
 
 	return query
 }
