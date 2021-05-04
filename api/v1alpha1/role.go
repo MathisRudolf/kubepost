@@ -33,6 +33,9 @@ type RoleSpec struct {
 	PasswordRef PasswordRef `json:"passwordRef"`
 	//+kubebuilder:validation:Optional
 	Grants []Grant `json:"grants"`
+	//+kubebuilder:validation:Optional
+	//+kubebuilder:default:=false
+	WithGrantOption bool `json:"withGrantOption"`
 }
 
 type PasswordRef struct {

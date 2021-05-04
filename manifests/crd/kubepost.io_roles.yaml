@@ -84,6 +84,9 @@ spec:
                 type: boolean
               roleName:
                 type: string
+              withGrantOption:
+                default: false
+                type: boolean
             required:
             - instanceRef
             - roleName
